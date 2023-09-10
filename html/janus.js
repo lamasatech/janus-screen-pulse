@@ -520,7 +520,8 @@ function Janus(gatewayCallbacks) {
 	var apisecret = null;
 	if(gatewayCallbacks.apisecret !== undefined && gatewayCallbacks.apisecret !== null)
 		apisecret = gatewayCallbacks.apisecret;
-		console.log('line 523 apisecret: ' + apisecret);
+	Janus.log("line 523 API secret: " + apisecret);
+	console.log('line 524 apisecret: ' + apisecret);
 	// Whether we should destroy this session when onbeforeunload is called
 	this.destroyOnUnload = true;
 	if(gatewayCallbacks.destroyOnUnload !== undefined && gatewayCallbacks.destroyOnUnload !== null)
