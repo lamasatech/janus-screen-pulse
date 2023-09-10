@@ -29,10 +29,12 @@ Janus.sessions = {};
 
 Janus.isExtensionEnabled = function() {
 	if(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+		console.log('line 32');
 		// No need for the extension, getDisplayMedia is supported
 		return true;
 	}
 	if(window.navigator.userAgent.match('Chrome')) {
+		console.log('line 37');
 		var chromever = parseInt(window.navigator.userAgent.match(/Chrome\/(.*) /)[1], 10);
 		var maxver = 33;
 		if(window.navigator.userAgent.match('Linux'))
@@ -43,6 +45,7 @@ Janus.isExtensionEnabled = function() {
 		}
 		return Janus.extension.isInstalled();
 	} else {
+		console.log('line 48');
 		// Firefox and others, no need for the extension (but this doesn't mean it will work)
 		return true;
 	}
@@ -107,12 +110,15 @@ Janus.useDefaultDependencies = function (deps) {
 				cache: 'no-cache'
 			};
 			if(options.verb === "POST") {
+				console.log('line 113');
 				fetchOptions.headers['Content-Type'] = 'application/json';
 			}
 			if(options.withCredentials !== undefined) {
+				console.log('line 117');
 				fetchOptions.credentials = options.withCredentials === true ? 'include' : (options.withCredentials ? options.withCredentials : 'omit');
 			}
 			if(options.body) {
+				console.log('line 121');
 				fetchOptions.body = JSON.stringify(options.body);
 			}
 
@@ -138,6 +144,7 @@ Janus.useDefaultDependencies = function (deps) {
 			fetching.then(function(response) {
 				if(response.ok) {
 					if(typeof(options.success) === typeof(Janus.noop)) {
+						console.log('line 147');
 						return response.json().then(function(parsed) {
 							try {
 								options.success(parsed);
@@ -150,6 +157,7 @@ Janus.useDefaultDependencies = function (deps) {
 					}
 				}
 				else {
+					console.log('line 160');
 					return p.reject({message: 'API call failed', response: response});
 				}
 			}).catch(function(error) {
@@ -187,6 +195,7 @@ Janus.useOldDependencies = function (deps) {
 				timeout: options.timeout,
 				success: function(result) {
 					if(typeof(options.success) === typeof(Janus.noop)) {
+						console.log('line 198');
 						options.success(result);
 					}
 				},
@@ -212,6 +221,7 @@ Janus.endOfCandidates = null;
 Janus.stopAllTracks = function(stream) {
 	try {
 		// Try a MediaStreamTrack.stop() for each track
+		console.log('line 224');
 		var tracks = stream.getTracks();
 		for(var mst of tracks) {
 			Janus.log(mst);
@@ -226,13 +236,16 @@ Janus.stopAllTracks = function(stream) {
 
 // Initialization
 Janus.init = function(options) {
+	console.log('line 239');
 	options = options || {};
 	options.callback = (typeof options.callback == "function") ? options.callback : Janus.noop;
 	if(Janus.initDone) {
 		// Already initialized
+		console.log('line 244');
 		options.callback();
 	} else {
 		if(typeof console.log == "undefined") {
+			console.log('line 248');
 			console.log = function() {};
 		}
 		// Console logging (all debugging disabled by default)
@@ -244,6 +257,7 @@ Janus.init = function(options) {
 		Janus.error = Janus.noop;
 		if(options.debug === true || options.debug === "all") {
 			// Enable all debugging levels
+			console.log('line 260');
 			Janus.trace = console.trace.bind(console);
 			Janus.debug = console.debug.bind(console);
 			Janus.vdebug = console.debug.bind(console);
@@ -252,6 +266,7 @@ Janus.init = function(options) {
 			Janus.error = console.error.bind(console);
 		} else if(Array.isArray(options.debug)) {
 			for(var d of options.debug) {
+				console.log('line 269');
 				switch(d) {
 					case "trace":
 						Janus.trace = console.trace.bind(console);
@@ -295,6 +310,7 @@ Janus.init = function(options) {
 				navigator.mediaDevices.getUserMedia(config)
 				.then(function(stream) {
 					navigator.mediaDevices.enumerateDevices().then(function(devices) {
+						console.log('line 313');
 						Janus.debug(devices);
 						callback(devices);
 						// Get rid of the now useless stream
@@ -313,6 +329,7 @@ Janus.init = function(options) {
 		// Helper methods to attach/reattach a stream to a video element (previously part of adapter.js)
 		Janus.attachMediaStream = function(element, stream) {
 			try {
+				console.log('line 332');
 				element.srcObject = stream;
 			} catch (e) {
 				try {
@@ -324,6 +341,7 @@ Janus.init = function(options) {
 		};
 		Janus.reattachMediaStream = function(to, from) {
 			try {
+				console.log('line 344');
 				to.srcObject = from.srcObject;
 			} catch (e) {
 				try {
@@ -356,6 +374,7 @@ Janus.init = function(options) {
 		if(Janus.webRTCAdapter.browserDetails.browser === 'safari' &&
 				Janus.webRTCAdapter.browserDetails.version >= 605) {
 			// Let's see if RTCRtpSender.getCapabilities() is there
+			console.log('line 377');
 			if(RTCRtpSender && RTCRtpSender.getCapabilities && RTCRtpSender.getCapabilities("video") &&
 					RTCRtpSender.getCapabilities("video").codecs && RTCRtpSender.getCapabilities("video").codecs.length) {
 				for(var codec of RTCRtpSender.getCapabilities("video").codecs) {
@@ -437,6 +456,7 @@ Janus.randomString = function(len) {
 };
 
 function Janus(gatewayCallbacks) {
+	console.log('line 459');
 	gatewayCallbacks = gatewayCallbacks || {};
 	gatewayCallbacks.success = (typeof gatewayCallbacks.success == "function") ? gatewayCallbacks.success : Janus.noop;
 	gatewayCallbacks.error = (typeof gatewayCallbacks.error == "function") ? gatewayCallbacks.error : Janus.noop;
@@ -469,9 +489,11 @@ function Janus(gatewayCallbacks) {
 	} else {
 		if(server.indexOf("ws") === 0) {
 			websockets = true;
+			console.log('line 492');
 			Janus.log("Using WebSockets to contact Janus: " + server);
 		} else {
 			websockets = false;
+			console.log('line 496');
 			Janus.log("Using REST API to contact Janus: " + server);
 		}
 	}
@@ -498,6 +520,7 @@ function Janus(gatewayCallbacks) {
 	var apisecret = null;
 	if(gatewayCallbacks.apisecret !== undefined && gatewayCallbacks.apisecret !== null)
 		apisecret = gatewayCallbacks.apisecret;
+		console.log('line 523 apisecret: ' + apisecret);
 	// Whether we should destroy this session when onbeforeunload is called
 	this.destroyOnUnload = true;
 	if(gatewayCallbacks.destroyOnUnload !== undefined && gatewayCallbacks.destroyOnUnload !== null)
@@ -546,6 +569,7 @@ function Janus(gatewayCallbacks) {
 	this.getServer = function() { return server; };
 	this.isConnected = function() { return connected; };
 	this.reconnect = function(callbacks) {
+		console.log('line 572');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : Janus.noop;
@@ -593,6 +617,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private event handler: this will trigger plugin callbacks, if set
 	function handleEvent(json, skipTimeout) {
+		console.log('line 620');
 		retries = 0;
 		if(!websockets && sessionId !== undefined && sessionId !== null && skipTimeout !== true)
 			eventHandler();
@@ -621,6 +646,7 @@ function Janus(gatewayCallbacks) {
 			return;
 		} else if(json["janus"] === "ack") {
 			// Just an ack, we can probably ignore
+			console.log('line 649');
 			Janus.debug("Got an ack on session " + sessionId);
 			Janus.debug(json);
 			const transaction = json["transaction"];
@@ -633,6 +659,7 @@ function Janus(gatewayCallbacks) {
 			return;
 		} else if(json["janus"] === "success") {
 			// Success!
+			console.log('line 662');
 			Janus.debug("Got a success on session " + sessionId);
 			Janus.debug(json);
 			const transaction = json["transaction"];
@@ -679,6 +706,7 @@ function Janus(gatewayCallbacks) {
 			}
 		} else if(json["janus"] === "webrtcup") {
 			// The PeerConnection with the server is up! Notify this
+			console.log('line 709');
 			Janus.debug("Got a webrtcup event on session " + sessionId);
 			Janus.debug(json);
 			const sender = json["sender"];
@@ -695,6 +723,7 @@ function Janus(gatewayCallbacks) {
 			return;
 		} else if(json["janus"] === "hangup") {
 			// A plugin asked the core to hangup a PeerConnection on one of our handles
+			console.log('line 726');
 			Janus.debug("Got a hangup event on session " + sessionId);
 			Janus.debug(json);
 			const sender = json["sender"];
@@ -711,6 +740,7 @@ function Janus(gatewayCallbacks) {
 			pluginHandle.hangup();
 		} else if(json["janus"] === "detached") {
 			// A plugin asked the core to detach one of our handles
+			console.log('line 743');
 			Janus.debug("Got a detached event on session " + sessionId);
 			Janus.debug(json);
 			const sender = json["sender"];
@@ -727,6 +757,7 @@ function Janus(gatewayCallbacks) {
 			pluginHandle.detach();
 		} else if(json["janus"] === "media") {
 			// Media started/stopped flowing
+			console.log('line 760');
 			Janus.debug("Got a media event on session " + sessionId);
 			Janus.debug(json);
 			const sender = json["sender"];
@@ -741,6 +772,7 @@ function Janus(gatewayCallbacks) {
 			}
 			pluginHandle.mediaState(json["type"], json["receiving"]);
 		} else if(json["janus"] === "slowlink") {
+			console.log('line 775');
 			Janus.debug("Got a slowlink event on session " + sessionId);
 			Janus.debug(json);
 			// Trouble uplink or downlink
@@ -757,6 +789,7 @@ function Janus(gatewayCallbacks) {
 			pluginHandle.slowLink(json["uplink"], json["lost"]);
 		} else if(json["janus"] === "error") {
 			// Oops, something wrong happened
+			console.log('line 792');
 			Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);	// FIXME
 			Janus.debug(json);
 			var transaction = json["transaction"];
@@ -769,6 +802,7 @@ function Janus(gatewayCallbacks) {
 			}
 			return;
 		} else if(json["janus"] === "event") {
+			console.log('line 805');
 			Janus.debug("Got a plugin event on session " + sessionId);
 			Janus.debug(json);
 			const sender = json["sender"];
@@ -831,6 +865,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to create a session
 	function createSession(callbacks) {
+		console.log('line 868');
 		var transaction = Janus.randomString(12);
 		var request = { "janus": "create", "transaction": transaction };
 		if(callbacks["reconnect"]) {
@@ -888,6 +923,7 @@ function Janus(gatewayCallbacks) {
 
 				'open': function() {
 					// We need to be notified about the success
+					console.log('line 926');
 					transactions[transaction] = function(json) {
 						Janus.debug(json);
 						if (json["janus"] !== "success") {
@@ -934,6 +970,7 @@ function Janus(gatewayCallbacks) {
 			withCredentials: withCredentials,
 			body: request,
 			success: function(json) {
+				console.log('line 973');
 				Janus.debug(json);
 				if(json["janus"] !== "success") {
 					Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);	// FIXME
@@ -952,6 +989,7 @@ function Janus(gatewayCallbacks) {
 				callbacks.success();
 			},
 			error: function(textStatus, errorThrown) {
+				console.log('line 992');
 				Janus.error(textStatus + ":", errorThrown);	// FIXME
 				if(Janus.isArray(servers) && !callbacks["reconnect"]) {
 					serversIndex++;
@@ -977,6 +1015,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to get info on the server
 	function getInfo(callbacks) {
+		console.log('line 1018');
 		callbacks = callbacks || {};
 		// FIXME This method triggers a success even when we fail
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
@@ -1011,6 +1050,7 @@ function Janus(gatewayCallbacks) {
 			withCredentials: withCredentials,
 			body: request,
 			success: function(json) {
+				console.log('line 1053');
 				Janus.log("Server info:");
 				Janus.debug(json);
 				if(json["janus"] !== "server_info") {
@@ -1153,6 +1193,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to create a plugin handle
 	function createHandle(callbacks) {
+		console.log('line 1196');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : Janus.noop;
@@ -1198,6 +1239,7 @@ function Janus(gatewayCallbacks) {
 					return;
 				}
 				var handleId = json.data["id"];
+				console.log('line 1242');
 				Janus.log("Created handle: " + handleId);
 				var pluginHandle =
 					{
@@ -1266,6 +1308,7 @@ function Janus(gatewayCallbacks) {
 						detach : function(callbacks) { destroyHandle(handleId, callbacks); }
 					};
 				pluginHandles[handleId] = pluginHandle;
+				console.log('line 1311');
 				callbacks.success(pluginHandle);
 			};
 			request["session_id"] = sessionId;
@@ -1277,6 +1320,7 @@ function Janus(gatewayCallbacks) {
 			withCredentials: withCredentials,
 			body: request,
 			success: function(json) {
+				console.log('line 1323');
 				Janus.debug(json);
 				if(json["janus"] !== "success") {
 					Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);	// FIXME
@@ -1352,6 +1396,7 @@ function Janus(gatewayCallbacks) {
 						detach : function(callbacks) { destroyHandle(handleId, callbacks); }
 					}
 				pluginHandles[handleId] = pluginHandle;
+				console.log('line 1399');
 				callbacks.success(pluginHandle);
 			},
 			error: function(textStatus, errorThrown) {
@@ -1366,6 +1411,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to send a message
 	function sendMessage(handleId, callbacks) {
+		console.log('line 1414');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : Janus.noop;
@@ -1400,9 +1446,11 @@ function Janus(gatewayCallbacks) {
 			if(jsep.force_relay)
 				request.jsep.force_relay = true;
 		}
+		console.log('line 1449');
 		Janus.debug("Sending message to plugin (handle=" + handleId + "):");
 		Janus.debug(request);
 		if(websockets) {
+			console.log('line 1453');
 			request["session_id"] = sessionId;
 			request["handle_id"] = handleId;
 			transactions[transaction] = function(json) {
@@ -1443,10 +1491,12 @@ function Janus(gatewayCallbacks) {
 			withCredentials: withCredentials,
 			body: request,
 			success: function(json) {
+				console.log('line 1494');
 				Janus.debug("Message sent!");
 				Janus.debug(json);
 				if(json["janus"] === "success") {
 					// We got a success, must have been a synchronous transaction
+					console.log('line 1499');
 					var plugindata = json["plugindata"];
 					if(!plugindata) {
 						Janus.warn("Request succeeded, but missing plugindata...");
@@ -1460,6 +1510,7 @@ function Janus(gatewayCallbacks) {
 					return;
 				} else if(json["janus"] !== "ack") {
 					// Not a success and not an ack, must be an error
+					console.log('line 1513');
 					if(json["error"]) {
 						Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);	// FIXME
 						callbacks.error(json["error"].code + " " + json["error"].reason);
@@ -1508,6 +1559,7 @@ function Janus(gatewayCallbacks) {
 			withCredentials: withCredentials,
 			body: request,
 			success: function(json) {
+				console.log('line 1562');
 				Janus.vdebug("Candidate sent!");
 				Janus.vdebug(json);
 				if(json["janus"] !== "ack") {
@@ -1523,6 +1575,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to create a data channel
 	function createDataChannel(handleId, dclabel, dcprotocol, incoming, pendingData) {
+		console.log('line 1578');
 		var pluginHandle = pluginHandles[handleId];
 		if(!pluginHandle || !pluginHandle.webrtcStuff) {
 			Janus.warn("Invalid handle");
@@ -1539,6 +1592,7 @@ function Janus(gatewayCallbacks) {
 			pluginHandle.ondata(event.data, label);
 		};
 		var onDataChannelStateChange = function(event) {
+			console.log('line 1595');
 			Janus.log('Received state change on data channel:', event);
 			var label = event.target.label;
 			var protocol = event.target.protocol;
@@ -1546,6 +1600,7 @@ function Janus(gatewayCallbacks) {
 			Janus.log('State change on <' + label + '> data channel: ' + dcState);
 			if(dcState === 'open') {
 				// Any pending messages to send?
+				console.log('line 1603');
 				if(config.dataChannel[label].pending && config.dataChannel[label].pending.length > 0) {
 					Janus.log("Sending pending messages on <" + label + ">:", config.dataChannel[label].pending.length);
 					for(var data of config.dataChannel[label].pending) {
@@ -1584,6 +1639,7 @@ function Janus(gatewayCallbacks) {
 
 	// Private method to send a data channel message
 	function sendData(handleId, callbacks) {
+		console.log('line 1642');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : Janus.noop;
@@ -1737,6 +1793,7 @@ function Janus(gatewayCallbacks) {
 
 	// WebRTC stuff
 	function streamsDone(handleId, jsep, media, callbacks, stream) {
+		console.log('line 1796');
 		var pluginHandle = pluginHandles[handleId];
 		if(!pluginHandle || !pluginHandle.webrtcStuff) {
 			Janus.warn("Invalid handle");
@@ -1792,6 +1849,7 @@ function Janus(gatewayCallbacks) {
 				config.myStream.addTrack(stream.getVideoTracks()[0]);
 				if(Janus.unifiedPlan) {
 					// Use Transceivers
+					console.log('line 1852');
 					Janus.log((media.replaceVideo ? "Replacing" : "Adding") + " video track:", stream.getVideoTracks()[0]);
 					var videoTransceiver = null;
 					const transceivers = config.pc.getTransceivers();
@@ -1810,6 +1868,7 @@ function Janus(gatewayCallbacks) {
 						config.pc.addTrack(stream.getVideoTracks()[0], stream);
 					}
 				} else {
+					console.log('line 1871');
 					Janus.log((media.replaceVideo ? "Replacing" : "Adding") + " video track:", stream.getVideoTracks()[0]);
 					config.pc.addTrack(stream.getVideoTracks()[0], stream);
 				}
@@ -2068,6 +2127,7 @@ function Janus(gatewayCallbacks) {
 	}
 
 	function prepareWebrtc(handleId, offer, callbacks) {
+		console.log('line 2130');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : webrtcError;
@@ -2286,6 +2346,7 @@ function Janus(gatewayCallbacks) {
 		}
 		// Was a MediaStream object passed, or do we need to take care of that?
 		if(callbacks.stream) {
+			console.log('line 2349');
 			var stream = callbacks.stream;
 			Janus.log("MediaStream provided by the application");
 			Janus.debug(stream);
@@ -2579,6 +2640,7 @@ function Janus(gatewayCallbacks) {
 	}
 
 	function prepareWebrtcPeer(handleId, callbacks) {
+		console.log('line 2643');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : webrtcError;
@@ -2833,6 +2895,7 @@ function Janus(gatewayCallbacks) {
 	}
 
 	function createAnswer(handleId, media, callbacks) {
+		console.log('line 2898');
 		callbacks = callbacks || {};
 		callbacks.success = (typeof callbacks.success == "function") ? callbacks.success : Janus.noop;
 		callbacks.error = (typeof callbacks.error == "function") ? callbacks.error : Janus.noop;
