@@ -1,6 +1,5 @@
 name: trigger remote-control
 on: [push]
-  ref: yasser
 jobs:
   dispatch:
     runs-on: ubuntu-latest
