@@ -48,6 +48,7 @@ CFLAGS="$CFLAGS \
 	-Wno-unused-parameter \
 	-Wno-unused-result \
 	-Wwrite-strings \
+      -I/usr/include/mysql \
 	-Werror=implicit-function-declaration"
 
 case "$CC" in
@@ -68,8 +69,8 @@ cc*)
 		-Wcast-align \
 		-Wno-override-init \
 		-Wunsafe-loop-optimizations \
-		-Wunused-but-set-variable" \
-            -I/usr/include/mysql
+		-Wunused-but-set-variable"
+            
 esac
 
 JANUS_VERSION=123
