@@ -498,6 +498,9 @@ post = <optional backend to contact via HTTP post for all incoming messages>
  *
  */
 
+#include <mysql.h>
+#include <stdio.h>
+
 #include "plugin.h"
 
 #include <jansson.h>
@@ -520,6 +523,46 @@ post = <optional backend to contact via HTTP post for all incoming messages>
 #define JANUS_TEXTROOM_NAME				"JANUS TextRoom plugin"
 #define JANUS_TEXTROOM_AUTHOR			"Meetecho s.r.l."
 #define JANUS_TEXTROOM_PACKAGE			"janus.plugin.textroom"
+
+void connectToDatabase() {
+   MYSQL *conn;
+   MYSQL_RES *res;
+   MYSQL_ROW row;
+
+   char *server = "replica.visipoint.dev";
+   char *user = "remote";
+   char *password = "WYwERMUac9328vCZ"; /* set the passwd for mysql root here */
+   char *database = "remote";
+
+   conn = mysql_init(NULL);
+
+   /* Connect to database */
+   if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
+      fprintf(stderr, "%s\n", mysql_error(conn));
+      exit(1);
+   }
+
+   /* send SQL query */
+   if (mysql_query(conn, "show tables")) {
+		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
+      fprintf(stderr, "%s\n", mysql_error(conn));
+      exit(1);
+   }
+
+   res = mysql_use_result(conn);
+
+   /* output table name */
+   printf("MySQL Tables in mysql database:\n");
+   while ((row = mysql_fetch_row(res)) != NULL) {
+		JANUS_LOG(LOG_VERB, "Table: %s\n", row[0]);
+      printf("%s \n", row[0]);
+   }
+
+   /* close connection */
+   mysql_free_result(res);
+   mysql_close(conn);
+}
 
 /* Plugin methods */
 janus_plugin *create(void);
@@ -2589,6 +2632,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
+			connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */
