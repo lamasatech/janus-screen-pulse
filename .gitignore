@@ -2,6 +2,7 @@ cmdline.c
 cmdline.h
 version.c
 docs/html/
+/node_modules
 
 /janus
 /janus-cfgconv
