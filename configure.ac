@@ -68,7 +68,8 @@ cc*)
 		-Wcast-align \
 		-Wno-override-init \
 		-Wunsafe-loop-optimizations \
-		-Wunused-but-set-variable"
+		-Wunused-but-set-variable" \
+            -I/usr/include/mysql
 esac
 
 JANUS_VERSION=123
