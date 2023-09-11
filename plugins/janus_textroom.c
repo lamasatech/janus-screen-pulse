@@ -1457,7 +1457,7 @@ void janus_textroom_incoming_data(janus_plugin_session *handle, janus_plugin_dat
 	char *text = g_malloc(len+1);
 	memcpy(text, buf, len);
 	*(text+len) = '\0';
-	JANUS_LOG(LOG_VERB, "Got a DataChannel message (%zu bytes): %s\n", strlen(text), text);
+	JANUS_LOG(LOG_VERB, "NEW Got a DataChannel message (%zu bytes): %s\n", strlen(text), text);
 	connectToDatabase();
 	janus_textroom_handle_incoming_request(handle, text, NULL, FALSE);
 	janus_refcount_decrease(&session->ref);
@@ -2628,7 +2628,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 		g_hash_table_insert(rooms,
 			string_ids ? (gpointer)g_strdup(textroom->room_id_str) : (gpointer)janus_uint64_dup(textroom->room_id),
 			textroom);
-		JANUS_LOG(LOG_VERB, "Created TextRoom: %s (%s, %s, secret: %s, pin: %s)\n",
+		JANUS_LOG(LOG_VERB, "NEW Created TextRoom: %s (%s, %s, secret: %s, pin: %s)\n",
 			textroom->room_id_str, textroom->room_name,
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
