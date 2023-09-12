@@ -593,7 +593,7 @@ static void connectToDatabase() {
    char *database = "remote";
    conn = malloc(sizeof(MYSQL));
 
-// 	mysql_init(conn);
+	mysql_init(conn);
 
 
 
