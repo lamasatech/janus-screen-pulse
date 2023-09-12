@@ -594,6 +594,12 @@ static void connectToDatabase() {
 
    conn = mysql_init(NULL);
 
+   if(conn == NULL) {
+	JANUS_LOG(LOG_VERB, "Error %u: %s\n", mysql_errno(conn), mysql_error(conn));
+       printf("Error %u: %s\n", mysql_errno(conn), mysql_error(conn));
+       return;
+   }
+
    /*if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
 		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
       fprintf(stderr, "%s\n", mysql_error(conn));
