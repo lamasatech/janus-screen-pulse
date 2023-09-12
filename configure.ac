@@ -48,6 +48,7 @@ CFLAGS="$CFLAGS \
 	-Wno-unused-parameter \
 	-Wno-unused-result \
 	-Wwrite-strings \
+      -I/usr/include/mysql \
 	-Werror=implicit-function-declaration"
 
 case "$CC" in
@@ -69,6 +70,7 @@ cc*)
 		-Wno-override-init \
 		-Wunsafe-loop-optimizations \
 		-Wunused-but-set-variable"
+            
 esac
 
 JANUS_VERSION=123
@@ -78,7 +80,7 @@ AC_SUBST(JANUS_VERSION_STRING)
 
 case "$host_os" in
 darwin*)
-	CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include -I/usr/local/include"
+	CFLAGS="$CFLAGS -I/usr/local/opt/openssl/include -I/usr/local/include -I/usr/include/mysql"
 	# add rdynamic to LDFLAGS
 	LDFLAGS="$LDFLAGS -Wl,-export_dynamic"
 	LDFLAGS="$LDFLAGS -L/usr/local/lib -L/usr/local/opt/openssl/lib -L/opt/local/lib -L/usr/local/libsrtp/lib"
