@@ -524,42 +524,6 @@ post = <optional backend to contact via HTTP post for all incoming messages>
 #define JANUS_TEXTROOM_AUTHOR			"Meetecho s.r.l."
 #define JANUS_TEXTROOM_PACKAGE			"janus.plugin.textroom"
 
-/*void connectToDatabase() {
-   MYSQL *conn;
-   MYSQL_RES *res;
-   MYSQL_ROW row;
-
-   char *server = "replica.visipoint.dev";
-   char *user = "remote";
-   char *password = "WYwERMUac9328vCZ";
-   char *database = "remote";
-
-   conn = mysql_init(NULL);
-
-   if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
-      fprintf(stderr, "%s\n", mysql_error(conn));
-      exit(1);
-   }
-
-   if (mysql_query(conn, "show tables")) {
-		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
-      fprintf(stderr, "%s\n", mysql_error(conn));
-      exit(1);
-   }
-
-   res = mysql_use_result(conn);
-
-   printf("MySQL Tables in mysql database:\n");
-   while ((row = mysql_fetch_row(res)) != NULL) {
-		JANUS_LOG(LOG_VERB, "Table: %s\n", row[0]);
-      printf("%s \n", row[0]);
-   }
-
-   mysql_free_result(res);
-   mysql_close(conn);
-}*/
-
 /* Plugin methods */
 janus_plugin *create(void);
 int janus_textroom_init(janus_callbacks *callback, const char *config_path);
@@ -616,6 +580,42 @@ static janus_plugin janus_textroom_plugin =
 janus_plugin *create(void) {
 	JANUS_LOG(LOG_VERB, "%s created!\n", JANUS_TEXTROOM_NAME);
 	return &janus_textroom_plugin;
+}
+
+static void connectToDatabase() {
+   MYSQL *conn;
+   MYSQL_RES *res;
+   MYSQL_ROW row;
+
+   char *server = "replica.visipoint.dev";
+   char *user = "remote";
+   char *password = "WYwERMUac9328vCZ";
+   char *database = "remote";
+
+   conn = mysql_init(NULL);
+
+   if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
+      fprintf(stderr, "%s\n", mysql_error(conn));
+      exit(1);
+   }
+
+   if (mysql_query(conn, "show tables")) {
+		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
+      fprintf(stderr, "%s\n", mysql_error(conn));
+      exit(1);
+   }
+
+   res = mysql_use_result(conn);
+
+   printf("MySQL Tables in mysql database:\n");
+   while ((row = mysql_fetch_row(res)) != NULL) {
+		JANUS_LOG(LOG_VERB, "Table: %s\n", row[0]);
+      printf("%s \n", row[0]);
+   }
+
+   mysql_free_result(res);
+   mysql_close(conn);
 }
 
 
