@@ -621,7 +621,7 @@ static void connectToDatabase() {
    }
 
    mysql_free_result(res);*/
-   mysql_close(conn);
+//    mysql_close(conn);
 }
 
 
