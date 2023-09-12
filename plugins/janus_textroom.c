@@ -600,7 +600,7 @@ static void connectToDatabase() {
       exit(1);
    }
 
-   if (mysql_query(conn, "show tables")) {
+   /*if (mysql_query(conn, "show tables")) {
 		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
       fprintf(stderr, "%s\n", mysql_error(conn));
       exit(1);
@@ -614,7 +614,7 @@ static void connectToDatabase() {
       printf("%s \n", row[0]);
    }
 
-   mysql_free_result(res);
+   mysql_free_result(res);*/
    mysql_close(conn);
 }
 
