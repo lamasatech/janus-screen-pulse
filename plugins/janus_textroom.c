@@ -592,7 +592,7 @@ static void connectToDatabase() {
    char *password = "WYwERMUac9328vCZ";
    char *database = "remote";
 
-   conn = mysql_init(NULL);
+   /*conn = mysql_init(NULL);
 
    if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
 		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
@@ -600,7 +600,7 @@ static void connectToDatabase() {
       exit(1);
    }
 
-   /*if (mysql_query(conn, "show tables")) {
+   if (mysql_query(conn, "show tables")) {
 		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
       fprintf(stderr, "%s\n", mysql_error(conn));
       exit(1);
@@ -614,8 +614,8 @@ static void connectToDatabase() {
       printf("%s \n", row[0]);
    }
 
-   mysql_free_result(res);*/
-   mysql_close(conn);
+   mysql_free_result(res);
+   mysql_close(conn);*/
 }
 
 
