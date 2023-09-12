@@ -592,11 +592,6 @@ static void connectToDatabase() {
    char *password = "WYwERMUac9328vCZ";
    char *database = "remote";
    conn = malloc(sizeof(MYSQL));
-   if(conn == NULL) {
-	JANUS_LOG(LOG_VERB, "Error message: %s\n", mysql_error(conn));
-    printf("Error message: %s\n", mysql_error(conn));
-       return;
-   }
 
 // 	mysql_init(conn);
 
