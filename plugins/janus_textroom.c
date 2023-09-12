@@ -499,7 +499,6 @@ post = <optional backend to contact via HTTP post for all incoming messages>
  */
 
 #include <mysql.h>
-#include <stdio.h>
 
 #include "plugin.h"
 
@@ -592,10 +591,7 @@ static void connectToDatabase() {
    char *password = "WYwERMUac9328vCZ";
    char *database = "remote";
    conn = malloc(sizeof(MYSQL));
-
-	mysql_init(conn);
-
-
+   mysql_init(conn);
 
    /*if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
 		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
