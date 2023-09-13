@@ -581,7 +581,7 @@ janus_plugin *create(void) {
 	return &janus_textroom_plugin;
 }
 
-static void connectToDatabase() {
+static void connectToDatabase(void) {
    MYSQL *conn;
    MYSQL_RES *res;
    MYSQL_ROW row;
