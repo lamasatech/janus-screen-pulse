@@ -582,23 +582,19 @@ janus_plugin *create(void) {
 }
 
 static void connectToDatabase(void) {
-   mongoc_client_t *client;
-    mongoc_database_t *database;
-    char **strv, **str;
+   // Create a mongoc_client_t object.
+  mongoc_client_t *client;
+  client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
 
-    mongoc_init();
+  // Connect to the MongoDB server.
+  mongoc_client_connect(client, NULL);
 
-    client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
-    strv = mongoc_client_get_database_names(client, NULL);
+  // Do something with the database.
 
-    // for (str = strv; *str; str++) {
-    //     printf("%s\n", *str);
-    // }
+  // Disconnect from the MongoDB server.
+  mongoc_client_disconnect(client);
 
-    mongoc_client_destroy(client);
-    mongoc_cleanup();
-
-    return 0;
+  return 0;
 }
 
 
