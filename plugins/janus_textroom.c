@@ -582,39 +582,23 @@ janus_plugin *create(void) {
 }
 
 static void connectToDatabase(void) {
-   MYSQL *conn;
-   MYSQL_RES *res;
-   MYSQL_ROW row;
+   mongoc_client_t *client;
+    mongoc_database_t *database;
+    char **strv, **str;
 
-   char *server = "replica.visipoint.dev";
-   char *user = "remote";
-   char *password = "WYwERMUac9328vCZ";
-   char *database = "remote";
-   conn = malloc(sizeof(MYSQL));
-   mysql_init(conn);
+    mongoc_init();
 
-   /*if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-		JANUS_LOG(LOG_VERB, "Error connecting to mysql: %s\n", mysql_error(conn));
-      fprintf(stderr, "%s\n", mysql_error(conn));
-      exit(1);
-   }
+    client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
+    strv = mongoc_client_get_database_names(client, NULL);
 
-   if (mysql_query(conn, "show tables")) {
-		JANUS_LOG(LOG_VERB, "Error show tables in mysql: %s\n", mysql_error(conn));
-      fprintf(stderr, "%s\n", mysql_error(conn));
-      exit(1);
-   }
+    // for (str = strv; *str; str++) {
+    //     printf("%s\n", *str);
+    // }
 
-   res = mysql_use_result(conn);
+    mongoc_client_destroy(client);
+    mongoc_cleanup();
 
-   printf("MySQL Tables in mysql database:\n");
-   while ((row = mysql_fetch_row(res)) != NULL) {
-		JANUS_LOG(LOG_VERB, "Table: %s\n", row[0]);
-      printf("%s \n", row[0]);
-   }
-
-   mysql_free_result(res);*/
-//    mysql_close(conn);
+    return 0;
 }
 
 
