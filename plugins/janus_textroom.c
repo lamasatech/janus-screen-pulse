@@ -498,7 +498,7 @@ post = <optional backend to contact via HTTP post for all incoming messages>
  *
  */
 
-#include <mysql.h>
+#include <mongoc.h>
 
 #include "plugin.h"
 
