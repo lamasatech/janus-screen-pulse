@@ -49,7 +49,7 @@ CFLAGS="$CFLAGS \
 	-Wno-unused-result \
 	-Wwrite-strings \
 	-I/usr/include/mysql \
-	-I/usr/local/include/libmongoc-1.0 \
+	-I/usr/include/libmongoc-1.0 \
 	-Werror=implicit-function-declaration"
 
 case "$CC" in
