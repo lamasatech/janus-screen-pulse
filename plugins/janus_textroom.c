@@ -583,6 +583,8 @@ janus_plugin *create(void) {
 
 static void connectToDatabase(void) {
   mongoc_client_t *client;
+  mongoc_database_t *database;
+  mongoc_collection_t *collection;
   client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
 
   database = mongoc_client_get_database(client, "mdm");
@@ -590,6 +592,8 @@ static void connectToDatabase(void) {
 
   // Do something with the database.
 
+ mongoc_collection_destroy(collection);
+  mongoc_database_destroy(database);
   mongoc_client_destroy(client);
 
 mongoc_cleanup();
