@@ -584,7 +584,9 @@ janus_plugin *create(void) {
 static void connectToDatabase(void) {
   mongoc_client_t *client;
   client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
-//   mongoc_client_connect(client, NULL);
+
+  database = mongoc_client_get_database(client, "mdm");
+  collection = mongoc_database_get_collection(database, "rooms");
 
   // Do something with the database.
 
