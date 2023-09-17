@@ -2613,20 +2613,20 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 
 
 			mongoc_client_t *client;
-			mongoc_database_t *database;
-			mongoc_collection_t *collection;
-			client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
+			// mongoc_database_t *database;
+			// mongoc_collection_t *collection;
+			// client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
 
-			database = mongoc_client_get_database(client, "mdm");
-			collection = mongoc_database_get_collection(database, "rooms");
+			// database = mongoc_client_get_database(client, "mdm");
+			// collection = mongoc_database_get_collection(database, "rooms");
 
-			// Do something with the database.
+			// // Do something with the database.
 
-			mongoc_collection_destroy(collection);
-			mongoc_database_destroy(database);
-			mongoc_client_destroy(client);
+			// mongoc_collection_destroy(collection);
+			// mongoc_database_destroy(database);
+			// mongoc_client_destroy(client);
 
-			mongoc_cleanup();
+			// mongoc_cleanup();
 
 
 		if(save) {
