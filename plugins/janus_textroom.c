@@ -589,9 +589,9 @@ static void connectToDatabase(void) {
   // Do something with the database.
 
 //   mongoc_client_disconnect(client);
-  mongoc_client_destroy(client);
+//   mongoc_client_destroy(client);
 
-mongoc_cleanup();
+// mongoc_cleanup();
 }
 
 
