@@ -2605,6 +2605,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 		g_hash_table_insert(rooms,
 			string_ids ? (gpointer)g_strdup(textroom->room_id_str) : (gpointer)janus_uint64_dup(textroom->room_id),
 			textroom);
+			mongoc_client_t *client;
 		JANUS_LOG(LOG_VERB, "NEW Created TextRoom: %s (%s, %s, secret: %s, pin: %s)\n",
 			textroom->room_id_str, textroom->room_name,
 			textroom->is_private ? "private" : "public",
@@ -2612,7 +2613,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->room_pin ? textroom->room_pin : "no pin");
 
 
-			mongoc_client_t *client;
+			// mongoc_client_t *client;
 			// mongoc_database_t *database;
 			// mongoc_collection_t *collection;
 			// client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
