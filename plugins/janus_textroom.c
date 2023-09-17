@@ -592,6 +592,8 @@ static void connectToDatabase(void) {
 
   // Do something with the database.
 
+ mongoc_collection_destroy(collection);
+  mongoc_database_destroy(database);
   mongoc_client_destroy(client);
 
 mongoc_cleanup();
