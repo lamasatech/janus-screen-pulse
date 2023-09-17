@@ -581,16 +581,16 @@ janus_plugin *create(void) {
 	return &janus_textroom_plugin;
 }
 
-static void connectToDatabase(void) {
-  mongoc_client_t *client;
-  client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
+// static void connectToDatabase(void) {
+//   mongoc_client_t *client;
+//   client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
 //   mongoc_client_connect(client, NULL);
 
   // Do something with the database.
 
 //   mongoc_client_disconnect(client);
-  return 0;
-}
+//   return 0;
+// }
 
 
 /* Parameter validation */
@@ -1428,7 +1428,7 @@ void janus_textroom_incoming_data(janus_plugin_session *handle, janus_plugin_dat
 	memcpy(text, buf, len);
 	*(text+len) = '\0';
 	JANUS_LOG(LOG_VERB, "NEW Got a DataChannel message (%zu bytes): %s\n", strlen(text), text);
-	connectToDatabase();
+	// connectToDatabase();
 	janus_textroom_handle_incoming_request(handle, text, NULL, FALSE);
 	janus_refcount_decrease(&session->ref);
 }
@@ -2603,7 +2603,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
-			connectToDatabase();
+			// connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */
