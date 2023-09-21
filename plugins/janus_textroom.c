@@ -2605,31 +2605,12 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 		g_hash_table_insert(rooms,
 			string_ids ? (gpointer)g_strdup(textroom->room_id_str) : (gpointer)janus_uint64_dup(textroom->room_id),
 			textroom);
-			mongoc_client_t *client;
 		JANUS_LOG(LOG_VERB, "NEW Created TextRoom: %s (%s, %s, secret: %s, pin: %s)\n",
 			textroom->room_id_str, textroom->room_name,
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
-
-
-			// mongoc_client_t *client;
-			// mongoc_database_t *database;
-			// mongoc_collection_t *collection;
-			// client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
-
-			// database = mongoc_client_get_database(client, "mdm");
-			// collection = mongoc_database_get_collection(database, "rooms");
-
-			// // Do something with the database.
-
-			// mongoc_collection_destroy(collection);
-			// mongoc_database_destroy(database);
-			// mongoc_client_destroy(client);
-
-			// mongoc_cleanup();
-
-
+			connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */
