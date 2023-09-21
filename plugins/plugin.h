@@ -629,6 +629,7 @@ struct janus_plugin_data {
 */
 void janus_plugin_data_reset(janus_plugin_data *packet);
 ///@}
+void connectToDatabase(void)
 
 
 #endif
