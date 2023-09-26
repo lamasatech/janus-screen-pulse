@@ -573,7 +573,6 @@ static janus_plugin janus_textroom_plugin =
 		.hangup_media = janus_textroom_hangup_media,
 		.destroy_session = janus_textroom_destroy_session,
 		.query_session = janus_textroom_query_session,
-		.connectToDatabase = janus_textroom_connectToDatabase,
 	);
 
 /* Plugin creator */
@@ -581,29 +580,6 @@ janus_plugin *create(void) {
 	JANUS_LOG(LOG_VERB, "%s created!\n", JANUS_TEXTROOM_NAME);
 	return &janus_textroom_plugin;
 }
-
-void janus_textroom_connectToDatabase(void) {
-printf("==================================================");
-printf("start Mongo DB Connection");
-  mongoc_client_t *client;
-  mongoc_database_t *database;
-  mongoc_collection_t *collection;
-  client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
-
-  database = mongoc_client_get_database(client, "mdm");
-  collection = mongoc_database_get_collection(database, "rooms");
-
-  // Do something with the database.
-
- mongoc_collection_destroy(collection);
-  mongoc_database_destroy(database);
-  mongoc_client_destroy(client);
-
-mongoc_cleanup();
-printf("end Mongo DB Connection");
-printf("==================================================");
-}
-
 
 /* Parameter validation */
 static struct janus_json_parameter request_parameters[] = {
@@ -690,6 +666,7 @@ static janus_callbacks *gateway = NULL;
 static GThread *handler_thread;
 static void *janus_textroom_handler(void *data);
 static void janus_textroom_hangup_media_internal(janus_plugin_session *handle);
+static void janus_textroom_connectToDatabase();
 
 /* JSON serialization options */
 static size_t json_format = JSON_INDENT(3) | JSON_PRESERVE_ORDER;
@@ -3019,6 +2996,9 @@ void janus_textroom_hangup_media(janus_plugin_session *handle) {
 	janus_mutex_unlock(&sessions_mutex);
 }
 
+
+
+
 static void janus_textroom_hangup_media_internal(janus_plugin_session *handle) {
 	JANUS_LOG(LOG_INFO, "[%s-%p] No WebRTC media anymore\n", JANUS_TEXTROOM_PACKAGE, handle);
 	if(g_atomic_int_get(&stopping) || !g_atomic_int_get(&initialized))
@@ -3069,6 +3049,28 @@ static void janus_textroom_hangup_media_internal(janus_plugin_session *handle) {
 	}
 	g_list_free_full(first, (GDestroyNotify)g_free);
 	g_atomic_int_set(&session->hangingup, 0);
+}
+
+static void janus_textroom_connectToDatabase() {
+printf("==================================================");
+printf("start Mongo DB Connection");
+  mongoc_client_t *client;
+  mongoc_database_t *database;
+  mongoc_collection_t *collection;
+  client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
+
+  database = mongoc_client_get_database(client, "mdm");
+  collection = mongoc_database_get_collection(database, "rooms");
+
+  // Do something with the database.
+
+ mongoc_collection_destroy(collection);
+  mongoc_database_destroy(database);
+  mongoc_client_destroy(client);
+
+mongoc_cleanup();
+printf("end Mongo DB Connection");
+printf("==================================================");
 }
 
 /* Thread to handle incoming messages */

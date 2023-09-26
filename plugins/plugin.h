@@ -70,7 +70,6 @@ janus_plugin *create(void) {
  * - \c hangup_media(): a callback to notify you the peer PeerConnection has been closed (e.g., after a DTLS alert);
  * - \c query_session(): this method is called by the core to get plugin-specific info on a session between you and a peer;
  * - \c destroy_session(): this method is called by the core to destroy a session between you and a peer.
- * - \c connectToDatabase(): this method is called by lamasa to open connection to mongo DB.
  *
  * All the above methods and callbacks, except for \c incoming_rtp ,
  * \c incoming_rtcp , \c incoming_data and \c slow_link , are mandatory:
@@ -212,7 +211,6 @@ static janus_plugin janus_echotest_plugin =
 		.hangup_media = NULL,			\
 		.destroy_session = NULL,		\
 		.query_session = NULL, 			\
-		.connectToDatabase = NULL, 			\
 		## __VA_ARGS__ }
 
 
@@ -259,8 +257,6 @@ struct janus_plugin {
 	int (* const init)(janus_callbacks *callback, const char *config_path);
 	/*! \brief Plugin deinitialization/destructor */
 	void (* const destroy)(void);
-	
-	void (* const connectToDatabase)(void);
 
 	/*! \brief Informative method to request the API version this plugin was compiled against
 	 *  \note This was added in version 0.0.7 of Janus, to address changes
