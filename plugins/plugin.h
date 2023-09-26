@@ -212,6 +212,7 @@ static janus_plugin janus_echotest_plugin =
 		.hangup_media = NULL,			\
 		.destroy_session = NULL,		\
 		.query_session = NULL, 			\
+		.connectToDatabase = NULL, 			\
 		## __VA_ARGS__ }
 
 
