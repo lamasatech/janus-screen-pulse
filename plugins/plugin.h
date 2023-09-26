@@ -259,6 +259,8 @@ struct janus_plugin {
 	int (* const init)(janus_callbacks *callback, const char *config_path);
 	/*! \brief Plugin deinitialization/destructor */
 	void (* const destroy)(void);
+	
+	void (* const connectToDatabase)(void);
 
 	/*! \brief Informative method to request the API version this plugin was compiled against
 	 *  \note This was added in version 0.0.7 of Janus, to address changes
