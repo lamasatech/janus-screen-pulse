@@ -581,7 +581,7 @@ janus_plugin *create(void) {
 	return &janus_textroom_plugin;
 }
 
-void connectToDatabase(void) {
+/*void connectToDatabase(void) {
   mongoc_client_t *client;
   mongoc_database_t *database;
   mongoc_collection_t *collection;
@@ -597,7 +597,7 @@ void connectToDatabase(void) {
   mongoc_client_destroy(client);
 
 mongoc_cleanup();
-}
+}*/
 
 
 /* Parameter validation */
@@ -1435,7 +1435,7 @@ void janus_textroom_incoming_data(janus_plugin_session *handle, janus_plugin_dat
 	memcpy(text, buf, len);
 	*(text+len) = '\0';
 	JANUS_LOG(LOG_VERB, "NEW Got a DataChannel message (%zu bytes): %s\n", strlen(text), text);
-	connectToDatabase();
+	// connectToDatabase();
 	janus_textroom_handle_incoming_request(handle, text, NULL, FALSE);
 	janus_refcount_decrease(&session->ref);
 }
@@ -2610,7 +2610,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
-			connectToDatabase();
+			// connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */

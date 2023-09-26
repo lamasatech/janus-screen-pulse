@@ -628,8 +628,8 @@ struct janus_plugin_data {
  * @param[in] packet Pointer to the janus_plugin_data message to reset
 */
 void janus_plugin_data_reset(janus_plugin_data *packet);
+
 ///@}
-void connectToDatabase(void)
 
 
 #endif
