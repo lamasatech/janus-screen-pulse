@@ -573,6 +573,7 @@ static janus_plugin janus_textroom_plugin =
 		.hangup_media = janus_textroom_hangup_media,
 		.destroy_session = janus_textroom_destroy_session,
 		.query_session = janus_textroom_query_session,
+		.connectToDatabase = janus_textroom_connectToDatabase,
 	);
 
 /* Plugin creator */
@@ -581,7 +582,9 @@ janus_plugin *create(void) {
 	return &janus_textroom_plugin;
 }
 
-/*void connectToDatabase(void) {
+void janus_textroom_connectToDatabase(void) {
+printf("==================================================");
+printf("start Mongo DB Connection");
   mongoc_client_t *client;
   mongoc_database_t *database;
   mongoc_collection_t *collection;
@@ -597,7 +600,9 @@ janus_plugin *create(void) {
   mongoc_client_destroy(client);
 
 mongoc_cleanup();
-}*/
+printf("end Mongo DB Connection");
+printf("==================================================");
+}
 
 
 /* Parameter validation */
@@ -2610,7 +2615,7 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->is_private ? "private" : "public",
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
-			// connectToDatabase();
+			janus_textroom_connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */
