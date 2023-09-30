@@ -685,8 +685,6 @@ static janus_callbacks *gateway = NULL;
 static GThread *handler_thread;
 static void *janus_textroom_handler(void *data);
 static void janus_textroom_hangup_media_internal(janus_plugin_session *handle);
-static void janus_textroom_connectToDatabase();
-
 
 /* JSON serialization options */
 static size_t json_format = JSON_INDENT(3) | JSON_PRESERVE_ORDER;
@@ -2613,7 +2611,6 @@ janus_plugin_result *janus_textroom_handle_incoming_request(janus_plugin_session
 			textroom->room_secret ? textroom->room_secret : "no secret",
 			textroom->room_pin ? textroom->room_pin : "no pin");
 			// connectToDatabase();
-			janus_textroom_connectToDatabase();
 		if(save) {
 			/* This room is permanent: save to the configuration file too
 			 * FIXME: We should check if anything fails... */
@@ -3015,28 +3012,6 @@ void janus_textroom_hangup_media(janus_plugin_session *handle) {
 	janus_mutex_lock(&sessions_mutex);
 	janus_textroom_hangup_media_internal(handle);
 	janus_mutex_unlock(&sessions_mutex);
-}
-
-static void janus_textroom_connectToDatabase() {
-	printf("==================================================");
-	printf("start Mongo DB Connection");
-	mongoc_client_t *client;
-	mongoc_database_t *database;
-	mongoc_collection_t *collection;
-	client = mongoc_client_new("mongodb://root:GXBE6SCjD33dh8Yk@mongo.visipoint.dev:27017/mdm?authSource=admin");
-
-	database = mongoc_client_get_database(client, "mdm");
-	collection = mongoc_database_get_collection(database, "rooms");
-
-	// Do something with the database.
-
-	mongoc_collection_destroy(collection);
-	mongoc_database_destroy(database);
-	mongoc_client_destroy(client);
-
-	mongoc_cleanup();
-	printf("end Mongo DB Connection");
-	printf("==================================================");
 }
 
 static void janus_textroom_hangup_media_internal(janus_plugin_session *handle) {
